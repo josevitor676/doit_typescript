@@ -5,11 +5,12 @@ import {
     Input as ChakraInput, 
     InputProps as ChakraInputProps, 
     InputLeftElement, 
-    InputGroup 
+    InputGroup, 
+    forwardRef
 } from "@chakra-ui/react";
 
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, ForwardRefRenderFunction } from "react";
 import { FieldError } from "react-hook-form";
 import { IconType } from "react-icons/lib";
 
@@ -32,11 +33,10 @@ const inputVariation: inputVariationProps = {
     filled: "green.500",
 }
 
-export const Input = ({name, error = null, icon: Icon, label, ...rest}: InputProps) => {
+const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputProps> = ({name, error = null, icon: Icon, label, ...rest}, ref) => {
 
     const [variation, setVariation] = useState('default');
-
-    const inputRef = useRef<HTMLInputElement>(null);
+    const [value, setValue] = useState("");
 
     useEffect(() => {
         if(error) {
@@ -51,10 +51,10 @@ export const Input = ({name, error = null, icon: Icon, label, ...rest}: InputPro
     }, [error])
 
     const handleInputBlur = useCallback(() => {
-        if(inputRef.current?.value && !error) {
+        if(value.length > 1 && !error) {
             return setVariation("filled")
         }
-    }, [error])
+    }, [error, value])
 
 
     return (
@@ -68,21 +68,26 @@ export const Input = ({name, error = null, icon: Icon, label, ...rest}: InputPro
                     </InputLeftElement>
                 }      
                 <ChakraInput 
+                id={name}
                 name={name} 
-                bg="gray.50" 
+                onChangeCapture={e => setValue(e.currentTarget.value)}
                 color={inputVariation[variation]}
                 borderColor={inputVariation[variation]}
                 onFocus={handleInputFocus}
                 onBlurCapture={handleInputBlur}
+                bg="gray.50" 
                 variant="outline" 
                 _hover={{bgColor: "gray.100"}}
                 _placeholder={{color: "gray.300"}}
                 size="lg"
                 h="45px"
+                ref={ref}
                 {...rest}/>
 
-                {!!error && <FormErrorMessage>Erro</FormErrorMessage>}
+                {!!error && <FormErrorMessage color="red.500">{error.message}</FormErrorMessage>}
             </InputGroup>
         </FormControl>
     )
 }
+
+export const Input = forwardRef(InputBase);
