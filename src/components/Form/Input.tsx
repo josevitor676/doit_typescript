@@ -21,20 +21,59 @@ interface InputProps extends ChakraInputProps {
     icon?: IconType;
 }
 
+type inputVariationProps = {
+    [key: string]: string;
+}
+
+const inputVariation: inputVariationProps = {
+    error: "red.500",
+    default: "gray.200",
+    focus: "purple.800",
+    filled: "green.500",
+}
+
 export const Input = ({name, error = null, icon: Icon, label, ...rest}: InputProps) => {
+
+    const [variation, setVariation] = useState('default');
+
+    const inputRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        if(error) {
+            return setVariation("error")
+        }
+    }, [error])
+
+    const handleInputFocus = useCallback(() => {
+        if(!error) {
+            setVariation("focus")
+        }
+    }, [error])
+
+    const handleInputBlur = useCallback(() => {
+        if(inputRef.current?.value && !error) {
+            return setVariation("filled")
+        }
+    }, [error])
+
+
     return (
-        <FormControl>
+        <FormControl isInvalid={!!error}>
             {!!label && <FormLabel>{label}</FormLabel> }
 
             <InputGroup flexDirection="column">
                 {Icon && 
-                    <InputLeftElement mt="2.2">
+                    <InputLeftElement color={inputVariation[variation]} mt="2.2">
                         <Icon/>
                     </InputLeftElement>
                 }      
                 <ChakraInput 
                 name={name} 
                 bg="gray.50" 
+                color={inputVariation[variation]}
+                borderColor={inputVariation[variation]}
+                onFocus={handleInputFocus}
+                onBlurCapture={handleInputBlur}
                 variant="outline" 
                 _hover={{bgColor: "gray.100"}}
                 _placeholder={{color: "gray.300"}}

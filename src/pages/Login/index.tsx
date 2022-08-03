@@ -1,16 +1,35 @@
-import { Flex, Grid, Heading, Image, Text, VStack } from "@chakra-ui/react"
-import { useForm } from "react-hook-form"
+import { Button, Flex, Grid, Heading, Image, Text, VStack } from "@chakra-ui/react"
+import { SubmitHandler, useForm } from "react-hook-form"
 import LogoSecondary from "../../assets/logo-secondary.svg"
 import { Input } from "../../components/Form/Input"
 import {FaEnvelope, FaLock} from "react-icons/fa"
+import * as yup from "yup"
+import  {yupResolver} from "@hookform/resolvers/yup"
+
+const signInSchema = yup.object().shape({
+    email: yup.string().required("Email Obrigatório").email("Email inválido"),
+    password: yup.string().required("Senha obrigatória")
+})
+
+interface SignInData {
+    email: string;
+    password: string;
+}
 
 export const Login = () => {
 
     const {
-        formState: {errors}, 
+        formState: { errors }, 
         register,
         handleSubmit
-    } = useForm()
+    } = useForm<SignInData>({
+        resolver: yupResolver(signInSchema)
+    })
+
+    const handleSignIn: SubmitHandler<SignInData> = (data: SignInData) => {
+        console.log(data)
+    }
+ 
     return (
         <Flex 
         p="10px 15px" 
@@ -31,18 +50,34 @@ export const Login = () => {
                     </Text>
                 </Grid>
                 <Grid 
-                as="form" 
+                as="form"
+                onSubmit={handleSubmit(handleSignIn)} 
                 mt="4" 
-                w="100%" 
+                w="50%" 
                 p="30px 15px" 
                 border="3px solid" 
                 borderColor="gray.100" bg="white" color="gray.900"
                 >  
                     <Heading>Bem vindo de volta!</Heading>
                     <VStack mt="6" spacing="5">
-                        <Input  icon={FaEnvelope} placeholder="Digite seu login" {...register("email")}/>
-                        <Input icon={FaLock} placeholder="Digite sua senha" {...register("password")}/>
+                        <Input  
+                        placeholder="Digite seu login" 
+                        icon={FaEnvelope} 
+                        label="Login"
+                        type="email"
+                        error={errors.email}
+                        {...register("email")}
+                        />
+                        <Input 
+                        placeholder="Digite sua senha" 
+                        icon={FaLock}
+                        label="Senha"
+                        type="password"
+                        error={errors.password} 
+                        {...register("password")}
+                        />
                     </VStack>
+                    <Button type="submit">Entrar</Button>
                 </Grid>
             </Flex>
         </Flex>
