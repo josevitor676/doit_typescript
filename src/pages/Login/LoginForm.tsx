@@ -1,6 +1,7 @@
 import { Box, Button, Grid, Heading, Text, VStack } from "@chakra-ui/react";
 import { DeepRequired, FieldErrorsImpl, UseFormRegister } from "react-hook-form";
 import { FaEnvelope, FaLock } from "react-icons/fa";
+import { useHistory } from "react-router-dom";
 import { Input } from "../../components/Form/Input";
 
 interface SignInData {
@@ -15,7 +16,11 @@ interface LoginFormProps {
     loading: boolean;
 }
 
-export const LoginForm = ({handleSignIn, errors, register, loading}: LoginFormProps) => (
+export const LoginForm = ({handleSignIn, errors, register, loading}: LoginFormProps) => { 
+
+  const history = useHistory()
+
+  return (
   <Grid
     as="form"
     onSubmit={handleSignIn}
@@ -75,10 +80,11 @@ export const LoginForm = ({handleSignIn, errors, register, loading}: LoginFormPr
         color="gray.300"
         h="45px"
         borderRadius="6px"
+        onClick={() => history.push("/signup")}
         _hover={{ background: "gray.200" }}
       >
         Cadastrar
       </Button>
     </VStack>
   </Grid>
-);
+)};

@@ -32,13 +32,13 @@ export const SignupForm = ({
     onSubmit={handleSignUp}
     mt={["4", "4", "0"]}
     w={["100%", "100%", "50%", "50%"]}
-    p="30px 15px"
+    p="20px"
     border="3px solid"
     borderColor="gray.100"
     bg="white"
     color="gray.900"
   >
-    <Heading>Bem vindo de volta!</Heading>
+    <Heading size="lg">Crie sua conta</Heading>
     <VStack mt="6" spacing="5">
       <Box w="100%">
       <Input
@@ -61,26 +61,25 @@ export const SignupForm = ({
             Exemplo: nome@email.com
           </Text>
         )}
-      </Box>
-      <Input
-        placeholder="Digite sua senha"
-        icon={FaLock}
-        label="Senha"
-        type="password"
-        error={errors.password}
-        {...register("password")}
-      />
+        <Input
+          placeholder="Digite sua senha"
+          icon={FaLock}
+          label="Senha"
+          type="password"
+          error={errors.password}
+          {...register("password")}
+        />
 
-      <Input
-        placeholder="Confirme sua senha"
-        icon={FaLock}
-        label="Confirmação de senha"
-        type="password"
-        error={errors.confirm_password}
-        {...register("confirm_password")}
-      />
+        <Input
+          placeholder="Confirme sua senha"
+          icon={FaLock}
+          label="Confirmação de senha"
+          type="password"
+          error={errors.confirm_password}
+          {...register("confirm_password")}
+        />
+      </Box>
     </VStack>
-    <VStack mt="4" spacing="5">
       <Button
         isLoading={loading}
         bg="purple.800"
@@ -90,22 +89,9 @@ export const SignupForm = ({
         borderRadius="6px"
         _hover={{ background: "purple.900" }}
         type="submit"
+        mt='6'
       >
-        Entrar
+        Finalizar cadastro
       </Button>
-
-      <Text color="gray.400">Ainda não possui uma conta?</Text>
-
-      <Button
-        bg="gray.100"
-        w="100%"
-        color="gray.300"
-        h="45px"
-        borderRadius="6px"
-        _hover={{ background: "gray.200" }}
-      >
-        Cadastrar
-      </Button>
-    </VStack>
   </Grid>
 );
