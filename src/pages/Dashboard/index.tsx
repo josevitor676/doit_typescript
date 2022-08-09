@@ -1,4 +1,5 @@
-import { Button, Text } from "@chakra-ui/react"
+import { Box, Button, Text } from "@chakra-ui/react"
+import { Header } from "../../components/Header";
 import { useAuth } from "../../contexts/AuthContext"
 
 export const Dashboard = () => {
@@ -6,10 +7,9 @@ export const Dashboard = () => {
     const {signOut} = useAuth();
 
     return (
-        <>
-        <Text>Dashboard</Text>
-        <Button onClick={signOut}>Deslogar</Button>
-        </>
+        <Box>
+            <Header/>
+        </Box>
         
     )
 }
