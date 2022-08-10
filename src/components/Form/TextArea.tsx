@@ -2,8 +2,8 @@ import {
     FormControl, 
     FormErrorMessage, 
     FormLabel, 
-    Input as ChakraInput, 
-    InputProps as ChakraInputProps, 
+    Textarea as ChakraTextarea, 
+    TextareaProps as ChakraTextareaProps, 
     InputLeftElement, 
     InputGroup, 
     forwardRef
@@ -15,7 +15,7 @@ import { FieldError } from "react-hook-form";
 import { IconType } from "react-icons/lib";
 
 
-interface InputProps extends ChakraInputProps {
+interface InputProps extends ChakraTextareaProps {
     name: string;
     label?: string;
     error?: FieldError | null;
@@ -33,7 +33,7 @@ const inputVariation: inputVariationProps = {
     filled: "green.500",
 }
 
-const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputProps> = ({name, error = null, icon: Icon, label, ...rest}, ref) => {
+const TextAreaBase: ForwardRefRenderFunction<HTMLTextAreaElement, InputProps> = ({name, error = null, icon: Icon, label, ...rest}, ref) => {
 
     const [variation, setVariation] = useState('default');
     const [value, setValue] = useState("");
@@ -67,15 +67,15 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputProps> = ({name
                         <Icon/>
                     </InputLeftElement>
                 }      
-                <ChakraInput 
+                <ChakraTextarea 
                 id={name}
                 name={name} 
                 onChangeCapture={e => setValue(e.currentTarget.value)}
                 color={inputVariation[variation]}
                 borderColor={inputVariation[variation]}
                 onFocus={handleInputFocus}
-                focusBorderColor="purple.500"
                 onBlurCapture={handleInputBlur}
+                focusBorderColor="purple.500"
                 bg="gray.50" 
                 variant="outline" 
                 _hover={{bgColor: "gray.100"}}
@@ -92,4 +92,4 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputProps> = ({name
     )
 }
 
-export const Input = forwardRef(InputBase);
+export const TextArea = forwardRef(TextAreaBase);
