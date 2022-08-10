@@ -50,7 +50,7 @@ export const ModalCreateTask = ({ isOpen, onClose}: ModalCreateTaskProps) => {
     const handleCreateTask = (data: TaskData) => {
         const newData = {...data, userId: user.id, completed: false }
 
-        createTask(newData, accessToken);
+        createTask(newData, accessToken).then((res) => onClose())
     }
 
     return (
