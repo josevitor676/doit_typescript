@@ -18,7 +18,10 @@ interface TaskContextData {
     createTask: (data: Omit<Task, "id">, accessToken: string) => Promise<void>;
     deleteTask: (taskId: string, accessToken: string) => Promise<void>;
     loadTasks: (userId: string, accessToken: string) => Promise<void>;
-    updateTask: (taskId: string, userId: string, accessToken: string) => Promise<void>
+    updateTask: (taskId: string, userId: string, accessToken: string) => Promise<void>;
+    searchTask: (taskTitle: string, accessToken: string) => Promise<void>;
+    notFound: boolean;
+    taskNotFound: string;
 }
 
 const TasksContext = createContext<TaskContextData>({} as TaskContextData);
@@ -36,6 +39,8 @@ const useTasks = () => {
 const TaskProvider = ({ children }: TaskProviderProps) => {
     
     const [tasks, setTasks] = useState<Task[]>([]);
+    const [notFound, setNotFound] = useState(false)
+    const [taskNotFound, setTaskNotFound] = useState("")
 
     const loadTasks = useCallback(async (userId: string, accessToken: string ) => {
         try {
@@ -87,8 +92,34 @@ const TaskProvider = ({ children }: TaskProviderProps) => {
         .catch(err => console.log(err))
     }, [tasks])
 
+    const searchTask = useCallback(async (taskTitle: string, accessToken: string) => {
+        const response = await api.get(`/tasks?title_like=${taskTitle}`, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        });
+
+        if(!response.data.length) {
+            setTaskNotFound(taskTitle);
+            return setNotFound(true);
+        }
+        
+        setNotFound(false)
+        setTasks(response.data);
+    }, [])
+
     return (
-        <TasksContext.Provider value={{tasks, createTask, deleteTask, updateTask, loadTasks}}>
+        <TasksContext.Provider 
+        value={{
+            tasks, 
+            createTask, 
+            deleteTask, 
+            updateTask, 
+            loadTasks, 
+            searchTask,
+            notFound,
+            taskNotFound
+            }}>
             {children}
         </TasksContext.Provider>
     )

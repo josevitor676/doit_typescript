@@ -11,12 +11,12 @@ interface Task {
     completed: boolean;
 }
 
-interface CardProps extends BoxProps{
+interface CardProps{
     task: Task;
-    
+    onClick: (task: Task) => void;
 }
 
-export const Card = ({ task, ...rest }: CardProps) => {
+export const Card = ({ task, onClick  }: CardProps) => {
 
     const {deleteTask, updateTask} = useTasks();
     const {accessToken, user} = useAuth();
@@ -30,9 +30,9 @@ export const Card = ({ task, ...rest }: CardProps) => {
         borderColor="gray.50"
         boxShadow="base"
         p="7"
-        w={["330px", "auto"]} 
+        w={["75vw", "auto"]} 
        
-        {...rest}
+        
         >
             <Flex justify="space-between">
                 <Heading as="h1" size="md">{task.title}</Heading>
@@ -65,7 +65,7 @@ export const Card = ({ task, ...rest }: CardProps) => {
                 </HStack>
             </Flex>
 
-            <Box w="100%" mt="4">
+            <Box onClick={() => onClick(task)} w="100%" mt="4">
                 <Text>{task.description}</Text>
                 <Progress colorScheme="purple" mt="2.5" value={task.completed ? 100 : 10}/>
                 <Text color="gray.200" mt="3">
