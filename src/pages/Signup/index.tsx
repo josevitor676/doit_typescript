@@ -110,12 +110,11 @@ export const Signup = () => {
         <Flex
           w={["100%", "100%", "90%", "65%"]}
           justifyContent="center"
-          flexDirection={["column", "column", "row", "row"]}
+          flexDirection={["column-reverse", "column-reverse", "row", "row"]}
           alignItems="center"
         >
-          {isWideVersion ? (
             <>
-              <GoBackButton top="90" left="25" />
+              <GoBackButton top={"90"} left="25" />
               <SignupForm
                 errors={errors}
                 handleSignUp={handleSubmit(handleSignup)}
@@ -124,18 +123,6 @@ export const Signup = () => {
               />
               <SignupInfo />
             </>
-          ) : (
-            <>
-              <GoBackButton top="10" left="75vw" />
-              <SignupInfo />
-              <SignupForm
-                errors={errors}
-                handleSignUp={handleSubmit(handleSignup)}
-                loading={loading}
-                register={register}
-              />
-            </>
-          )}
         </Flex>
       </Flex>
     </>

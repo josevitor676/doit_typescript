@@ -29,7 +29,7 @@ export const Card = ({ task, onClick  }: CardProps) => {
         borderWidth="1px"
         borderColor="gray.50"
         boxShadow="base"
-        p="7"
+        p="5"
         w={["75vw", "auto"]} 
        
         
